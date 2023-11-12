@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "unimart-by-evoq"
+version = "0.1.0"
+description = ""
+authors = ["Tigran Saatchyan <mr.saatchyan@gmail.com>"]
+readme = "README.md"
+packages = [{include = "app"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = {extras = ["all"], version = "^0.104.1"}
+sqlalchemy = "^2.0.23"
+alembic = "^1.12.1"
+
+
+[tool.poetry.group.develop.dependencies]
+flake8-fastapi = "^0.7.0"
+flake8 = "^6.1.0"
+pytest = "^7.4.3"
+pre-commit = "^3.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
