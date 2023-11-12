@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Type
+from typing import ClassVar, Type
 
 from dotenv import load_dotenv
 
@@ -17,7 +17,7 @@ class Config:
     REFRESH_TOKEN_DAYS = 90
 
     # FastAPI settings
-    FASTAPI_SETTINGS = {
+    FASTAPI_SETTINGS: ClassVar[dict[str, str | int | bool | dict]] = {
         "docs_url": "/docs",
         "redoc_url": "/",
         "debug": DEBUG,
@@ -36,28 +36,33 @@ class Config:
     POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
     POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
     POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
-    POSTGRES_PORT = os.getenv("POSTGRES_PORT", 5432)
+    POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
 
-    DATABASE_LOGIN = f"asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}"
+    DATABASE_DRIVER = os.getenv("DATABASE_DRIVER", "postgresql+asyncpg")
+    DATABASE_LOGIN = f"://{POSTGRES_USER}:{POSTGRES_PASSWORD}"
     DATABASE_CONNECT = f"@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
-    DATABASE_URI = DATABASE_LOGIN + DATABASE_CONNECT
+    DATABASE_URI = DATABASE_DRIVER + DATABASE_LOGIN + DATABASE_CONNECT
 
     # Allowed hosts
-    ALLOWED_HOSTS = ["*"]
+    ALLOWED_HOSTS: ClassVar = ["*"]
 
     ALL_HOSTS = "http://*"
 
     # CORS settings
-    CORS_ALLOWED_ORIGINS = [os.getenv("CORS_ALLOWED_HOST", ALL_HOSTS)]
-    CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False").lower() in (
+    CORS_ALLOWED_ORIGINS: ClassVar = [
+        os.getenv("CORS_ALLOWED_HOST", ALL_HOSTS)
+    ]
+    CORS_ALLOW_ALL_ORIGINS: ClassVar = os.getenv(
+        "CORS_ALLOW_ALL_ORIGINS", "False"
+    ).lower() in (
         "true",
         "1",
         "True",
     )
 
     # CSRF protection settings
-    CSRF_TRUSTED_ORIGINS = [
+    CSRF_TRUSTED_ORIGINS: ClassVar = [
         os.getenv("CSRF_TRUSTED_FRONTEND", ALL_HOSTS),
         os.getenv("CSRF_TRUSTED_BACKEND", ALL_HOSTS),
     ]
@@ -91,12 +96,15 @@ class ConfigFactory:
     @classmethod
     def get_config(cls) -> Type[Config]:
         if cls.fastapi_env == "development":
-            return DevelopmentConfig
+            env_config = DevelopmentConfig
         elif cls.fastapi_env == "production":
-            return ProductionConfig
+            env_config = ProductionConfig
         elif cls.fastapi_env == "testing":
-            return TestingConfig
-        raise NotImplementedError
+            env_config = TestingConfig
+        else:
+            raise NotImplementedError
+
+        return env_config
 
 
 config = ConfigFactory.get_config()
