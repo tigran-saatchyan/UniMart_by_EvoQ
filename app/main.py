@@ -2,10 +2,10 @@ import uvicorn
 
 from app.utils.factories import (
     create_app,
-    setup_database,
-    setup_cors,
-    setup_routes,
     custom_openapi,
+    setup_cors,
+    setup_database,
+    setup_routes,
 )
 
 app = create_app()

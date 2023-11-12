@@ -11,14 +11,67 @@ python = "^3.12"
 fastapi = {extras = ["all"], version = "^0.104.1"}
 sqlalchemy = "^2.0.23"
 alembic = "^1.12.1"
+asyncpg = "^0.29.0"
+python-dateutil = "^2.8.2"
 
 
 [tool.poetry.group.develop.dependencies]
-flake8-fastapi = "^0.7.0"
-flake8 = "^6.1.0"
 pytest = "^7.4.3"
 pre-commit = "^3.5.0"
+ruff = "^0.1.5"
+black = "^23.11.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+select = ["D", "E", "PIE", "T20", "PYI", "Q", "RET", "SIM", "PTH"]
+respect-gitignore = false
+show-fixes = true
+target-version = "py312"
+exclude = [".venv", "migrations"]
+preview = true
+line-length = 79
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 79
+max-doc-length = 72
+
+[tool.ruff.lint]
+select = [
+    "D", # pydocstyle (D)
+    "E", # pycodestyle (E, W)
+    "PIE", # flake8-pie (PIE)
+    "T20", # flake8-print (T20)
+    "PYI", # flake8-pyi (PYI)
+    "Q", # flake8-quotes (Q)
+    "RET", # flake8-return (RET)
+    "SIM", # flake8-simplify (SIM)
+    "PTH", # flake8-use-pathlib (PTH)
+    "TD", # flake8-todos (TD)
+    "FIX", # flake8-fixmes (FIX)
+    "FURB", # refurb (FURB)
+    "RUF", # Ruff-specific rules (RUF)
+    "C90", # mccabe (C90) (complex-structure)
+    "I", # isort (I)
+]
+ignore = [
+    "D417", # Missing argument descriptions in the docstring
+    "D415", # First line should end with a period
+    "D205", # 1 blank line required between summary line and description
+    "D1", # Missing docstring
+    "TD003", # Missing issue link on the line following this TODOs
+    "FIX002", # todos found
+    "FIX003", # XXX found
+    "FIX004", # HACK found
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.black]
+line-length = 79
+target-version = ["py312"]
+include = "\\.pyi?$"
+exclude = "/(\\.venv|build|dist|migrations)/"
