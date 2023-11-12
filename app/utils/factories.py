@@ -8,12 +8,11 @@ from app.settings import config
 
 
 def create_app() -> FastAPI:
-    application = FastAPI(**config.FASTAPI_SETTINGS)
-    return application
+    return FastAPI(**config.FASTAPI_SETTINGS)
 
 
 def setup_database(application: FastAPI) -> None:
-    # TODO: implement database setup
+    # TODO @Tigran_Saatchyan: implement database setup
     ...
 
 
@@ -28,7 +27,7 @@ def setup_cors(application: FastAPI) -> None:
 
 
 def setup_routes(application: FastAPI) -> None:
-    # TODO: implement routes registration
+    # TODO @Tigran_Saatchyan: implement routes registration
     ...
 
 
