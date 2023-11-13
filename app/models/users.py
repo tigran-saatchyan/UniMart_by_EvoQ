@@ -17,8 +17,8 @@ class User(BaseModel):
     telephone: Mapped[str] = mapped_column(String(50), nullable=False)
     telegram_user_id: Mapped[str] = mapped_column(Integer, nullable=True)
     role: Mapped[str] = mapped_column(String(50), nullable=False)
-    country: Mapped[str] = mapped_column(String(50), nullable=False)
-    city: Mapped[str] = mapped_column(String(50), nullable=False)
+    country: Mapped[str] = mapped_column(String(50), nullable=True)
+    city: Mapped[str] = mapped_column(String(50), nullable=True)
     last_login: Mapped[str] = mapped_column(TIMESTAMP, nullable=True)
 
     is_superuser: Mapped[bool] = mapped_column(
@@ -45,4 +45,22 @@ class User(BaseModel):
         return self.email
 
     def to_pydantic_model(self):
-        return UserSchema.model_validate(self)
+        return UserSchema(
+            id=self.id,
+            email=self.email,
+            first_name=self.first_name,
+            last_name=self.last_name,
+            full_name=self.full_name,
+            telephone=self.telephone,
+            telegram_user_id=self.telegram_user_id,
+            role=self.role,
+            country=self.country,
+            city=self.city,
+            last_login=self.last_login,
+            is_superuser=self.is_superuser,
+            is_staff=self.is_staff,
+            is_active=self.is_active,
+            is_verified=self.is_verified,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+        )

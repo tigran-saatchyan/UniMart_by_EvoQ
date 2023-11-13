@@ -27,8 +27,10 @@ def setup_cors(application: FastAPI) -> None:
 
 
 def setup_routes(application: FastAPI) -> None:
-    # TODO @Tigran_Saatchyan: implement routes registration
-    ...
+    from app.api.v1.routers import all_routers
+
+    for router in all_routers:
+        application.include_router(router)
 
 
 def custom_openapi(application: FastAPI) -> Dict[str, dict]:
