@@ -1,5 +1,5 @@
 from sqlalchemy import Boolean, Float, ForeignKey, Integer, String, Text
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base_model import (
     BaseModel,
@@ -18,10 +18,18 @@ class Product(BaseModel):
     owner_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("users.id"), nullable=False
     )
-    owner: Mapped[int] = relationship("User", back_populates="products")
     is_active: Mapped[bool] = mapped_column(
         Boolean, nullable=False, default=False
     )
 
     def to_pydantic_model(self):
-        return ProductSchema.model_validate(self)
+        return ProductSchema(
+            id=self.id,
+            name=self.name,
+            description=self.description,
+            price=self.price,
+            owner_id=self.owner_id,
+            is_active=self.is_active,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+        )

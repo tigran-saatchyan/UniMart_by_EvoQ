@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
 class UserSchema(BaseModel):
+    id: int
     email: str
     password_hash: str
     first_name: str
@@ -16,6 +19,8 @@ class UserSchema(BaseModel):
     is_staff: bool
     is_active: bool
     is_verified: bool
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         from_attributes = True
