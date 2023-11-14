@@ -1,4 +1,4 @@
-from sqlalchemy import TIMESTAMP, Boolean, Integer, String
+from sqlalchemy import TIMESTAMP, Boolean, Integer, LargeBinary, String
 from sqlalchemy.orm import Mapped, column_property, mapped_column
 
 from app.models import BaseModel
@@ -11,12 +11,16 @@ class User(BaseModel):
     email: Mapped[str] = mapped_column(
         String(255), nullable=False, unique=True
     )
-    password_hash: Mapped[str] = mapped_column(String(128), nullable=False)
+    password_hash: Mapped[bytes] = mapped_column(LargeBinary, nullable=False)
+    password_salt: Mapped[bytes] = mapped_column(LargeBinary, nullable=False)
+    telephone: Mapped[str] = mapped_column(
+        String(50), unique=True, nullable=False
+    )
+
     first_name: Mapped[str] = mapped_column(String(150), nullable=True)
     last_name: Mapped[str] = mapped_column(String(150), nullable=True)
-    telephone: Mapped[str] = mapped_column(String(50), nullable=False)
     telegram_user_id: Mapped[str] = mapped_column(Integer, nullable=True)
-    role: Mapped[str] = mapped_column(String(50), nullable=False)
+    role: Mapped[str] = mapped_column(String(50), default="user")
     country: Mapped[str] = mapped_column(String(50), nullable=True)
     city: Mapped[str] = mapped_column(String(50), nullable=True)
     last_login: Mapped[str] = mapped_column(TIMESTAMP, nullable=True)
@@ -34,6 +38,7 @@ class User(BaseModel):
         Boolean, nullable=False, default=False
     )
 
+    @property
     @column_property
     def full_name(self) -> str:
         """Returns the best name"""

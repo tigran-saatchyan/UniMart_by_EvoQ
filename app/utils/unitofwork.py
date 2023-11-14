@@ -3,10 +3,12 @@ from typing import Type
 
 from app.db.db import async_session_maker
 from app.repositories.products import ProductsRepository
+from app.repositories.users import UsersRepository
 
 
 class IUnitOfWork(ABC):
     products: Type[ProductsRepository]
+    users: Type[UsersRepository]
 
     @abstractmethod
     def __init__(self): ...
@@ -33,6 +35,7 @@ class UnitOfWork(IUnitOfWork):
     async def __aenter__(self):
         self.session = self.session_factory()
         self.products = ProductsRepository(self.session)
+        self.users = UsersRepository(self.session)
 
     async def __aexit__(self, *args):
         await self.rollback()
