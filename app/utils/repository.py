@@ -59,4 +59,4 @@ class BaseRepository(AbstractRepository):
 
     async def delete(self, id: int):
         statement = delete(self.model).where(self.model.id == id).returning()
-        await self.session.execute(statement)
+        return await self.session.execute(statement)

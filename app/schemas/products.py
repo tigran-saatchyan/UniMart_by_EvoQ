@@ -21,7 +21,6 @@ class ProductsSchemaAdd(BaseModel):
     name: str
     description: str
     price: float
-    owner_id: int
 
 
 class ProductsSchemaEdit(BaseModel):
