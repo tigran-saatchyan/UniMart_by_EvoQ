@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 
+from app.api.v1.auth import set_up_auth_routes
 from app.settings import config
 
 
@@ -29,6 +30,7 @@ def setup_cors(application: FastAPI) -> None:
 def setup_routes(application: FastAPI) -> None:
     from app.api.v1.routers import all_routers
 
+    set_up_auth_routes(application)
     for router in all_routers:
         application.include_router(router)
 

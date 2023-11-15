@@ -67,6 +67,8 @@ class Config:
         os.getenv("CSRF_TRUSTED_BACKEND", ALL_HOSTS),
     ]
 
+    COOKIE_MAX_AGE = 3600
+
     # jwt secret and algorithm
     JWT_SECRET = "$CekpeTHo$"
     JWT_ALGORITHM = "HS256"
