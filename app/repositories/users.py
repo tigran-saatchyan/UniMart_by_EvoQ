@@ -27,13 +27,20 @@ class UsersRepository(BaseRepository):
         return result.scalars().first()
 
     async def is_exists(self, user_dict: dict):
-        is_exists_email = await self.get_by_email(user_dict["email"])
-        is_exists_telephone = await self.get_by_telephone(
-            user_dict["telephone"]
-        )
-        if is_exists_email or is_exists_telephone:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="User with this email OR telephone "
-                "number already exists",
+        if "email" in user_dict:
+            is_exists_email = bool(await self.get_by_email(user_dict["email"]))
+            if is_exists_email:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="User with this email number already exists",
+                )
+
+        if "telephone" in user_dict:
+            is_exists_telephone = bool(
+                await self.get_by_telephone(user_dict["telephone"])
             )
+            if is_exists_telephone:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="User with this telephone number already exists",
+                )

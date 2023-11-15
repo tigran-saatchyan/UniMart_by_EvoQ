@@ -64,10 +64,17 @@ class UsersSchemaAdd(BaseModel):
 
 
 class UsersSchemaEdit(BaseModel):
-    first_name: Optional[str]
-    last_name: Optional[str]
-    telephone: Optional[str]
-    telegram_user_id: Optional[str]
-    role: Optional[str]
-    country: Optional[str]
-    city: Optional[str]
+    first_name: Optional[str] = Field(None)
+    last_name: Optional[str] = Field(None)
+    telephone: Optional[str] = Field(None)
+    telegram_user_id: Optional[int] = Field(None)
+    country: Optional[str] = Field(None)
+    city: Optional[str] = Field(None)
+
+    def _validate_telephone(self):
+        if self.telephone:
+            validator = TelephoneValidator()
+            validator(self.telephone)
+
+    def validate_data(self):
+        self._validate_telephone()
