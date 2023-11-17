@@ -9,8 +9,6 @@ from app.schemas.users import UserRead
 
 
 class User(SQLAlchemyBaseUserTable[int], BaseModel):
-    __tablename__ = "users"
-
     telephone: Mapped[str] = mapped_column(
         String(50), unique=True, nullable=False
     )
@@ -39,7 +37,3 @@ class User(SQLAlchemyBaseUserTable[int], BaseModel):
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
-
-    class PydanticMeta:
-        computed = ("full_name",)
-        exclude = ("is_active", "is_superuser", "is_verified")

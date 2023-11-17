@@ -27,3 +27,13 @@ class TelephoneValidator:
                 detail="The telephone number is not valid",
             )
         return True
+
+
+class ProductInCartValidator:
+    def __call__(self, product):
+        if product is not None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Product is already in cart",
+            )
+        return True

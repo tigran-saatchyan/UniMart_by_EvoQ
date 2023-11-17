@@ -21,12 +21,6 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int], UsersRepository):
     reset_password_token_secret = config.JWT_SECRET
     verification_token_secret = config.JWT_SECRET
 
-    async def on_after_register(
-        self, user: User, request: Optional[Request] = None
-    ):
-        # TODO @Tigran_Saatchyan: implement logging
-        ...
-
     async def validate_password(
         self, password: str, user: Union[schemas.UC, models.UP, Dict[str, Any]]
     ) -> None:
@@ -74,8 +68,6 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int], UsersRepository):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="User with this telephone already exists",
             ) from e
-        await self.on_after_register(created_user, request)
-
         return created_user
 
     async def _update(
