@@ -72,7 +72,11 @@ ignore = [
     "D417", # Missing argument descriptions in the docstring
     "D415", # First line should end with a period
     "D205", # 1 blank line required between summary line and description
-    "D1", # Missing docstring
+    "D104", # Missing docstring
+    "D101", # Missing docstring
+    "D102", # Missing docstring
+    "D106", # Missing docstring
+    "D107", # Missing docstring
     "TD003", # Missing issue link on the line following this TODOs
     "FIX002", # todos found
     "FIX003", # XXX found

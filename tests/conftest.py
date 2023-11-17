@@ -1,3 +1,5 @@
+"""Pytest configuration file for the application."""
+
 import asyncio
 from typing import AsyncGenerator
 
@@ -15,14 +17,11 @@ from app.db import Base, get_async_session
 from app.main import app
 from app.settings import config
 
-# DATABASE
-
 engine_test = create_async_engine(config.TEST_DATABASE_URI, poolclass=NullPool)
 async_session_maker = async_sessionmaker(
     engine_test, class_=AsyncSession, expire_on_commit=False
 )
 Base.metadata.bind = engine_test
-
 
 USER_EMAIL = "user3@example.com"
 USER_PHONE = "+79999999999"
@@ -42,6 +41,11 @@ USER_DATA = {
 
 
 async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    """Override the get_async_session dependency to use a testing session.
+
+    Yields:
+        AsyncSession: An asynchronous session for testing purposes.
+    """
     async with async_session_maker() as session:
         yield session
 
@@ -50,10 +54,16 @@ app.dependency_overrides[get_async_session] = override_get_async_session
 
 
 async def login_user(ac: AsyncClient):
-    await ac.post(
-        "/api/v1/register",
-        json=USER_DATA,
-    )
+    """Simulate user registration and login, returning the
+        authentication cookies.
+
+    Args:
+        ac (AsyncClient): The asynchronous HTTP client.
+
+    Returns:
+        http.cookies: Authentication cookies.
+    """
+    await ac.post("/api/v1/register", json=USER_DATA)
 
     response = await ac.post(
         "/api/v1/jwt/login",
@@ -64,6 +74,7 @@ async def login_user(ac: AsyncClient):
 
 @pytest.fixture(autouse=True, scope="class")
 async def prepare_database():
+    """Fixture to set up and tear down the test database."""
     async with engine_test.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield
@@ -85,5 +96,10 @@ client = TestClient(app)
 
 @pytest.fixture(scope="session")
 async def ac() -> AsyncGenerator[AsyncClient, None]:
+    """AsyncClient fixture for testing asynchronous endpoints.
+
+    Yields:
+        AsyncClient: An asynchronous HTTP client for testing.
+    """
     async with AsyncClient(app=app, base_url="http://test") as ac:
         yield ac

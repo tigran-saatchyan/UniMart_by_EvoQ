@@ -1,3 +1,5 @@
+"""Tests for the cart endpoints."""
+
 from httpx import AsyncClient
 from starlette import status
 
@@ -7,6 +9,14 @@ from tests.conftest import login_user
 class TestCart:
     @staticmethod
     async def test_add_to_cart(ac: AsyncClient):
+        """Test adding a product to the user's cart.
+
+        Args:
+            ac (AsyncClient): The asynchronous HTTP client.
+
+        Returns:
+            None
+        """
         auth_cookies = await login_user(ac)
         test_product = {
             "name": "Test product",
@@ -36,6 +46,14 @@ class TestCart:
 
     @staticmethod
     async def test_get_all_from_cart(ac: AsyncClient):
+        """Test retrieving all products from the user's cart.
+
+        Args:
+            ac (AsyncClient): The asynchronous HTTP client.
+
+        Returns:
+            None
+        """
         auth_cookies = await login_user(ac)
 
         response = await ac.get(

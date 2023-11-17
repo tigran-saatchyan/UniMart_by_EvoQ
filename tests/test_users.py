@@ -1,3 +1,5 @@
+"""Tests for the users endpoints."""
+
 from httpx import AsyncClient
 from starlette import status
 
@@ -7,6 +9,14 @@ from tests.conftest import login_user
 class TestUsers:
     @staticmethod
     async def test_get_current_user(ac: AsyncClient):
+        """Test retrieving information about the current user.
+
+        Args:
+            ac (AsyncClient): The asynchronous HTTP client.
+
+        Returns:
+            None
+        """
         auth_cookies = await login_user(ac)
         response = await ac.get(
             "/users/me",
