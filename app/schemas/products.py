@@ -3,7 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class ProductSchema(BaseModel):
+class ProductRead(BaseModel):
     id: int
     name: str
     description: str
@@ -17,13 +17,13 @@ class ProductSchema(BaseModel):
         from_attributes = True
 
 
-class ProductsSchemaAdd(BaseModel):
+class ProductsCreate(BaseModel):
     name: str
     description: str
     price: float
 
 
-class ProductsSchemaEdit(BaseModel):
+class ProductsUpdate(BaseModel):
     name: str
     description: str
     price: float
