@@ -4,26 +4,38 @@ version = "0.1.0"
 description = ""
 authors = ["Tigran Saatchyan <mr.saatchyan@gmail.com>"]
 readme = "README.md"
-packages = [{include = "app"}]
+packages = [{ include = "app" }]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-fastapi = {extras = ["all"], version = "^0.104.1"}
+fastapi = { extras = ["all"], version = "^0.104.1" }
 sqlalchemy = "^2.0.23"
 alembic = "^1.12.1"
 asyncpg = "^0.29.0"
 python-dateutil = "^2.8.2"
-fastapi-users = {extras = ["sqlalchemy"], version = "^12.1.2"}
-
+fastapi-users = { extras = ["sqlalchemy"], version = "^12.1.2" }
 
 [tool.poetry.group.develop.dependencies]
 pytest = "^7.4.3"
 pre-commit = "^3.5.0"
 ruff = "^0.1.5"
+pytest-postgresql = "^5.0.0"
+pytest-asyncio = "^0.21.1"
+pytest-cov = "^4.1.0"
+
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = [
+    ".", "app"
+]
+asyncio_mode = "auto"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
 
 [tool.ruff]
 select = ["D", "E", "PIE", "T20", "PYI", "Q", "RET", "SIM", "PTH"]
