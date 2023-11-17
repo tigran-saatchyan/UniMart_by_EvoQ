@@ -1,5 +1,5 @@
 
-<h1 align="center">UniMart by EvoQ</h1>
+<h1 align="center">UniMart by EvoQ<br>Your Personal Shopping Companion</h1>
 
 <h4 align="center">E-Commerce API MVP</h4>
 
@@ -17,7 +17,6 @@
 * [Features](#features)
 * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-  * [Setting up](#setting-up)
   * [Structure / Scaffolding](#structure--scaffolding)
 * [Documentation](#documentation)
 * [Browser Support](#browser-support)
@@ -41,7 +40,47 @@ into their applications or websites, making it
 easier to run online stores.
 
 ## Features
+#### **Effortless Registration, Exclusive Access**
 
+- **Swift Onboarding:**
+  - Join UniMart with a breeze using your Full Name, Email, and Phone – setting up your account in moments.
+
+- **Exclusive Shopping Experience:**
+  - Gain access to a world of curated products tailor-made for our authorized users.
+
+#### **Smart Shopping with UniMart Basket**
+
+- **Intelligent Cart Management:**
+  - UniMart Basket, your intelligent shopping companion, adapts to your preferences seamlessly.
+
+- **Quick Checkout:**
+  - Add, remove, or clear items with a single click – making your shopping journey smooth and enjoyable.
+
+#### **Real-Time Product Discovery**
+
+- **Diverse Product Range:**
+  - Explore a diverse range of products that cater to your unique tastes and needs.
+
+- **Stay Informed:**
+  - Receive real-time updates on product additions and updates, ensuring you never miss out.
+
+#### **Secure and User-Friendly Authentication**
+
+- **Effortless Login:**
+  - Swiftly access UniMart using your Email or Phone, accompanied by a secure password.
+
+- **Authenticated Perks:**
+  - Unlock a world of benefits with exclusive access to our curated product list.
+
+#### **Technical Brilliance for a Seamless Experience**
+
+- **Blazing-Fast Speed:**
+  - UniMart leverages asynchronous processes, ensuring a swift and responsive shopping experience.
+
+- **Secure Identity Handling:**
+  - Your identity is protected with robust Bearer Tokens or JWT authentication.
+
+#### **UniMart by EvoQ - Elevating Your Shopping Experience to New Heights!**
 ## Prerequisites
 
 You will need the following installed on your computer.
@@ -51,14 +90,51 @@ You will need the following installed on your computer.
 
 ### Installation
 
-Rename '.env.template' to '.env' and fill in the required fields.
+Let's go through the steps to run the project "UniMart_by_EvoQ".
 
-Open your terminal and type in.
+1. **Clone the Repository:**
+   ```bash
+   git clone git@github.com:tigran-saatchyan/UniMart_by_EvoQ.git
+   ```
 
-[//]: # (TODO: update after composer is implemented)
+2. **Navigate to Project Directory:**
+   ```bash
+   cd UniMart_by_EvoQ
+   ```
 
+3. **Install Poetry:**
+   - If you haven't installed Poetry yet, please follow the instructions on the official website: https://python-poetry.org/docs/#installation
 
-### Setting up
+4. **Install Project Dependencies:**
+   ```bash
+   poetry install
+   ```
+
+5. **Activate Virtual Environment:**
+   ```bash
+   poetry shell
+   ```
+
+6. **Run the Project:**
+   - Unfortunately, without specific information about how the project should be run, I can't provide an exact command. Look for a `main.py`, `app.py`, or similar file, and run it using:
+     ```bash
+     uvicorn main:app --reload --host 127.0.0.1 --port 8000
+     ```
+
+7. **Testing:**
+   - If there are tests available, you can run them with:
+     ```bash
+     poetry run pytest
+     ```
+    - If you want to run the tests with coverage, you can use:
+      ```bash
+      poetry run pytest --cov=app tests/
+      ```
+    - If you want to run the tests with coverage and generate a report, you can use:
+      ```bash
+      poetry run pytest --cov=app tests/ --cov-report=html && open htmlcov/index.html
+      ```
+Please note that the success of these steps depends on the project's structure and requirements. If there are additional steps or specific configurations needed, consult the project's documentation or README.
 
 
 ### Structure / Scaffolding
@@ -144,7 +220,6 @@ app
    ├── unitofwork.py
    └── utils.py
 
-
 ```
 
 </details>
@@ -153,8 +228,8 @@ app
 <strong>Note:</strong> The scaffolding was generated with tree.
 
 ## Documentation
-- http://localhost:8000/
-- http://localhost:8000/docs
+- http://example.com:8000/
+- http://example.com:8000/docs
 
 ## Dependencies
 
@@ -187,9 +262,8 @@ Detailed changes for each release will be documented in the
 [release notes](https://github.com/users/tigran-saatchyan/projects/11).
 
 ## Issues
-
-![GitHub issues](https://img.shields.io/github/issues/tigran-saatchyan/UniMart_by_Evoq)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/tigran-saatchyan/UniMart_by_Evoq)
+<a href="https://github.com/tigran-saatchyan/UniMart_by_EvoQ/issues?q=is%3Aopen+is%3Aissue"><img src="https://img.shields.io/github/issues/tigran-saatchyan/UniMart_by_Evoq" alt="Support me on Paypal"></a>
+<a href="https://github.com/tigran-saatchyan/UniMart_by_EvoQ/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed/tigran-saatchyan/UniMart_by_Evoq" alt="Support me on Paypal"></a>
 
 Please make sure to read the [Issue Reporting Checklist](https://github.com/tigran-saatchyan/UniMart_by_Evoq/issues?q=is%3Aopen) before opening an issue. Issues not conforming to the guidelines may be closed immediately.
 
@@ -226,4 +300,4 @@ Like what you see? Keep me awake at night by buying me a coffee or two.
 ## License
 Copyright (c) 2023 Tigran Saatchyan.
 
-Usage is provided under the MIT License. See [LICENSE](https://github.com/tigran-saatchyan/UniMart_by_Evoq/blob/master/LICENSE) for the full details.
+Usage is provided under the MIT License. See [LICENSE](https://github.com/tigran-saatchyan/UniMart_by_EvoQ/blob/master/LICENSE) for the full details.
