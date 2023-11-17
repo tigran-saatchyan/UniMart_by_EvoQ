@@ -58,9 +58,9 @@ class UserCreate(schemas.BaseUserCreate):
     """
 
     confirm_password: str
-    first_name: Optional[str] = Field(None)
-    last_name: Optional[str] = Field(None)
-    telephone: Optional[str] = Field(None)
+    first_name: Optional[str]
+    last_name: Optional[str]
+    telephone: Optional[str]
 
 
 class UserUpdate(schemas.BaseUserUpdate):
