@@ -1,3 +1,5 @@
+"""Configuration classes for the application."""
+
 import os
 from pathlib import Path
 from typing import ClassVar, Type
@@ -11,6 +13,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 class Config:
+    """Base configuration class for the application.
+
+    Attributes:
+        DEBUG (bool): Indicates whether the application is in debug mode.
+        ACCESS_TOKEN_MINUTES (int): The expiration time for access
+            tokens in minutes.
+        REFRESH_TOKEN_DAYS (int): The expiration time for refresh
+            tokens in days.
+        FASTAPI_SETTINGS (ClassVar[dict]): FastAPI settings for the
+            application.
+        ... (Other attributes for email settings, database connection, etc.)
+
+    """
+
     DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "True")
 
     ACCESS_TOKEN_MINUTES = 60
@@ -98,23 +114,76 @@ class Config:
 
 
 class DevelopmentConfig(Config):
+    """Development-specific configuration class.
+
+    Inherits from the base Config class.
+
+    Attributes:
+        DEBUG (bool): Indicates whether the application is in debug
+            mode (set to True in development).
+    """
+
     DEBUG = True
 
 
 class TestingConfig(Config):
+    """Testing-specific configuration class.
+
+    Inherits from the base Config class.
+
+    Attributes:
+        DEBUG (bool): Indicates whether the application is in debug
+            mode (set to True in testing).
+        TESTING (bool): Indicates that the application is in testing mode.
+    """
+
     DEBUG = True
     TESTING = True
 
 
 class ProductionConfig(Config):
+    """Production-specific configuration class.
+
+    Inherits from the base Config class.
+
+    Attributes:
+        DEBUG (bool): Indicates whether the application is in debug
+            mode (set to False in production).
+    """
+
     DEBUG = False
 
 
 class ConfigFactory:
+    """Factory class for obtaining the appropriate configuration class
+        based on the environment.
+
+    Attributes:
+        fastapi_env (str): The environment variable indicating the
+            FastAPI environment.
+
+    Methods:
+        get_config(): Get the configuration class based on the
+            FastAPI environment.
+
+    Raises:
+        NotImplementedError: If the FastAPI environment is not recognized.
+
+    """
+
     fastapi_env = os.getenv("FASTAPI_ENV")
 
     @classmethod
     def get_config(cls) -> Type[Config]:
+        """Get the configuration class based on the FastAPI environment.
+
+        Returns:
+            Type[Config]: The configuration class for the
+                current environment.
+
+        Raises:
+            NotImplementedError: If the FastAPI environment is not recognized.
+        """
         if cls.fastapi_env == "development":
             env_config = DevelopmentConfig
         elif cls.fastapi_env == "production":

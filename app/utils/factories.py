@@ -1,3 +1,5 @@
+"""Factories for creating FastAPI application instances."""
+
 from typing import Dict
 
 from fastapi import FastAPI
@@ -9,15 +11,21 @@ from app.settings import config
 
 
 def create_app() -> FastAPI:
+    """Create a FastAPI application instance with configuration settings.
+
+    Returns:
+        FastAPI: The FastAPI application instance.
+    """
     return FastAPI(**config.FASTAPI_SETTINGS)
 
 
-def setup_database(application: FastAPI) -> None:
-    # TODO @Tigran_Saatchyan: implement database setup
-    ...
-
-
 def setup_cors(application: FastAPI) -> None:
+    """Set up Cross-Origin Resource Sharing (CORS) middleware for
+        the FastAPI application.
+
+    Args:
+        application (FastAPI): The FastAPI application instance.
+    """
     application.add_middleware(
         CORSMiddleware,
         allow_origins=config.CORS_ALLOWED_ORIGINS,
@@ -28,6 +36,11 @@ def setup_cors(application: FastAPI) -> None:
 
 
 def setup_routes(application: FastAPI) -> None:
+    """Set up API routes for the FastAPI application.
+
+    Args:
+        application (FastAPI): The FastAPI application instance.
+    """
     from app.api.v1.routers import all_routers
 
     set_up_auth_routes(application)
@@ -36,6 +49,14 @@ def setup_routes(application: FastAPI) -> None:
 
 
 def custom_openapi(application: FastAPI) -> Dict[str, dict]:
+    """Customize the OpenAPI schema for the FastAPI application.
+
+    Args:
+        application (FastAPI): The FastAPI application instance.
+
+    Returns:
+        Dict[str, dict]: The customized OpenAPI schema.
+    """
     if application.openapi_schema:
         return application.openapi_schema
     openapi_schema = get_openapi(

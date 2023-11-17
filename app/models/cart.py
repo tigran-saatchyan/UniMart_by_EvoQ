@@ -1,3 +1,5 @@
+"""Database model representing a shopping cart."""
+
 from sqlalchemy import Boolean, Float, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -6,6 +8,22 @@ from app.schemas.cart import CartRead
 
 
 class Cart(BaseModel):
+    """Database model representing a shopping cart.
+
+    Attributes:
+        id (int): The primary key of the cart.
+        price (float): The total price of the products in the cart.
+        quantity (int): The quantity of the product in the cart.
+        product_id (int): The foreign key referencing the associated
+            product.
+        owner_id (int): The foreign key referencing the owner (user)
+            of the cart.
+        is_active (bool): Indicates whether the cart is active.
+        created_at (datetime): The timestamp when the cart was created.
+        updated_at (datetime): The timestamp when the cart was last
+            updated.
+    """
+
     __tablename__ = "cart"
 
     price: Mapped[float] = mapped_column(
@@ -23,6 +41,11 @@ class Cart(BaseModel):
     )
 
     def to_pydantic_model(self):
+        """Convert the database model to a Pydantic model (CartRead).
+
+        Returns:
+            CartRead: The Pydantic model representing the cart.
+        """
         return CartRead(
             id=self.id,
             price=self.price,
