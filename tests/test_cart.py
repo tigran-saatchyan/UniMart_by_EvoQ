@@ -8,7 +8,7 @@ from tests.conftest import login_user
 
 class TestCart:
     @staticmethod
-    async def test_add_to_cart(ac: AsyncClient):
+    async def test_add_to_cart(register_user, login_user, ac: AsyncClient):
         """Test adding a product to the user's cart.
 
         Args:
@@ -17,7 +17,6 @@ class TestCart:
         Returns:
             None
         """
-        auth_cookies = await login_user(ac)
         test_product = {
             "name": "Test product",
             "description": "Some description",
@@ -29,7 +28,7 @@ class TestCart:
             json=test_product,
             headers={
                 "Content-Type": "application/json",
-                "Cookie": "unimartcookie=" + auth_cookies["unimartcookie"],
+                "Cookie": "unimartcookie=" + ac.cookies["unimartcookie"],
             },
         )
 
@@ -38,14 +37,16 @@ class TestCart:
             json={"product_id": int(product.text), "quantity": 1},
             headers={
                 "Content-Type": "application/json",
-                "Cookie": "unimartcookie=" + auth_cookies["unimartcookie"],
+                "Cookie": "unimartcookie=" + ac.cookies["unimartcookie"],
             },
         )
 
         assert response.status_code == status.HTTP_201_CREATED
 
     @staticmethod
-    async def test_get_all_from_cart(ac: AsyncClient):
+    async def test_get_all_from_cart(
+        register_user, login_user, ac: AsyncClient
+    ):
         """Test retrieving all products from the user's cart.
 
         Args:
@@ -54,13 +55,11 @@ class TestCart:
         Returns:
             None
         """
-        auth_cookies = await login_user(ac)
-
         response = await ac.get(
             "/cart/get_all/",
             headers={
                 "Content-Type": "application/json",
-                "Cookie": "unimartcookie=" + auth_cookies["unimartcookie"],
+                "Cookie": "unimartcookie=" + ac.cookies["unimartcookie"],
             },
         )
 
