@@ -4,7 +4,6 @@ import asyncio
 from typing import AsyncGenerator
 
 import pytest
-from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -50,6 +49,17 @@ async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:
 app.dependency_overrides[get_async_session] = override_get_async_session
 
 
+@pytest.fixture(scope="function")
+async def register_user(ac: AsyncClient):
+    """Simulate user registration.
+
+    Args:
+        ac (AsyncClient): The asynchronous HTTP client.
+    """
+    await ac.post("/api/v1/register", json=USER_DATA)
+
+
+@pytest.fixture(scope="function")
 async def login_user(ac: AsyncClient):
     """Simulate user registration and login, returning the
         authentication cookies.
@@ -60,13 +70,13 @@ async def login_user(ac: AsyncClient):
     Returns:
         http.cookies: Authentication cookies.
     """
-    await ac.post("/api/v1/register", json=USER_DATA)
-
     response = await ac.post(
         "/api/v1/jwt/login",
         data={"username": USER_EMAIL, "password": USER_PASSWORD},
     )
-    return response.cookies
+    ac.cookies.update(response.cookies)
+
+    return ac.cookies
 
 
 @pytest.fixture(autouse=True, scope="class")
@@ -85,9 +95,6 @@ def event_loop(request):
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
-
-
-client = TestClient(app)
 
 
 @pytest.fixture(scope="session")

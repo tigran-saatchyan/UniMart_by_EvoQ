@@ -8,7 +8,9 @@ from tests.conftest import login_user
 
 class TestUsers:
     @staticmethod
-    async def test_get_current_user(ac: AsyncClient):
+    async def test_get_current_user(
+        register_user, login_user, ac: AsyncClient
+    ):
         """Test retrieving information about the current user.
 
         Args:
@@ -17,12 +19,11 @@ class TestUsers:
         Returns:
             None
         """
-        auth_cookies = await login_user(ac)
         response = await ac.get(
             "/users/me",
             headers={
                 "Content-Type": "application/x-www-form-urlencoded",
-                "Cookie": "unimartcookie=" + auth_cookies["unimartcookie"],
+                "Cookie": "unimartcookie=" + ac.cookies["unimartcookie"],
             },
         )
 

@@ -23,10 +23,11 @@ class TestAuth:
         )
 
         assert response.status_code == status.HTTP_201_CREATED
+        assert response.json()["email"] == USER_EMAIL
 
 
-class TestLogin:
-    async def test_login_and_logout(self, ac: AsyncClient):
+class TestLoginLogout:
+    async def test_login(self, register_user, ac: AsyncClient):
         """Test user login and logout endpoints.
 
         Args:
@@ -35,23 +36,21 @@ class TestLogin:
         Returns:
             None
         """
-        await ac.post(
-            "/api/v1/register",
-            json=USER_DATA,
-        )
-
         login_response = await ac.post(
             "/api/v1/jwt/login",
             data={"username": USER_EMAIL, "password": USER_PASSWORD},
         )
-        auth_cookies = login_response.cookies
         assert login_response.status_code == status.HTTP_204_NO_CONTENT
+        assert "unimartcookie" in ac.cookies
 
+    @staticmethod
+    async def test_logout(register_user, login_user, ac: AsyncClient):
         logout_response = await ac.post(
             "/api/v1/jwt/logout",
             headers={
                 "Content-Type": "application/x-www-form-urlencoded",
-                "Cookie": "unimartcookie=" + auth_cookies["unimartcookie"],
+                "Cookie": "unimartcookie=" + ac.cookies["unimartcookie"],
             },
         )
         assert logout_response.status_code == status.HTTP_204_NO_CONTENT
+        assert "unimartcookie" not in ac.cookies
