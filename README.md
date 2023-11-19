@@ -87,6 +87,7 @@ You will need the following installed on your computer.
 
 * [Git](https://git-scm.com/)
 * [Python Poetry](https://python-poetry.org/)
+* [PostgreSQL](https://www.postgresql.org/)
 
 ### Installation
 
@@ -104,6 +105,10 @@ Let's go through the steps to run the project "UniMart_by_EvoQ".
 
 3. **Install Poetry:**
    - If you haven't installed Poetry yet, please follow the instructions on the official website: https://python-poetry.org/docs/#installation
+   - If you have Poetry installed, you can use the following command to activate Python 3.12 for the project:
+        ```bash
+        poetry env use python3.12
+        ```
 
 4. **Install Project Dependencies:**
    ```bash
@@ -115,14 +120,35 @@ Let's go through the steps to run the project "UniMart_by_EvoQ".
    poetry shell
    ```
 
-6. **Run the Project:**
-   - Unfortunately, without specific information about how the project should be run, I can't provide an exact command. Look for a `main.py`, `app.py`, or similar file, and run it using:
-     ```bash
-     uvicorn main:app --reload --host 127.0.0.1 --port 8000
-     ```
+6. **Create Database:**
+   - If you haven't installed PostgreSQL yet, please follow the instructions on the official website: https://www.postgresql.org/download/
+   ```bash
+    createdb --host=POSTGRES_HOST --port=POSTGRES_PORT --username=POSTGRES_USER POSTGRES_DB
+    ```
+   - **Note:** Don't forget to rename .env.sample and replace the values with your own.
+   - **Note:** If you are using the default PostgreSQL settings, you can use the following command:
+       ```bash
+       createdb --host=localhost --port=5432 --username=postgres unimart_db
+       ```
 
-7. **Testing:**
-   - If there are tests available, you can run them with:
+7. **Run Migrations:**
+   ```bash
+   alembic upgrade head
+   ```
+
+8. **Run the Project:**
+    ```bash
+    uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+    ```
+
+9. **Testing:**
+   - Create a test database:
+     ```bash
+     createdb --host=TEST_POSTGRES_HOST --port=TEST_POSTGRES_PORT --username=TEST_POSTGRES_USER TEST_POSTGRES_DB
+     ```
+     - **Note:** Don't forget to replace the values with your own and put them in the .env.test file.
+
+   - You can run tests by using the following command:
      ```bash
      poetry run pytest
      ```
@@ -146,9 +172,9 @@ Please note that the success of these steps depends on the project's structure a
           ===================             Created: 5 days ago
                    ==========             Language:
    ========================== =======               ● Python (100.0 %)
- ============================ ========    Authors: 100% Tigran Saatchyan 20
+ ============================ ========    Authors: 100% Tigran Saatchyan
 ============================= =========   URL: git@github.com:tigran-saatchyan/UniMart_by_EvoQ.git
-============================ ==========   Commits: 20
+============================ ==========
 ========== ============================
 ========= =============================   Lines of code: 1369
  ======== ============================    Size: 244.97 KiB (60 files)
@@ -197,6 +223,7 @@ app
 │  ├── __init__.py
 │  ├── cart.py
 │  ├── products.py
+│  ├── repository.py
 │  └── users.py
 ├── schemas
 │  ├── __init__.py
@@ -216,9 +243,9 @@ app
 └── utils
    ├── __init__.py
    ├── factories.py
-   ├── repository.py
    ├── unitofwork.py
    └── utils.py
+
 
 ```
 
@@ -262,8 +289,8 @@ Detailed changes for each release will be documented in the
 [release notes](https://github.com/users/tigran-saatchyan/projects/11).
 
 ## Issues
-<a href="https://github.com/tigran-saatchyan/UniMart_by_EvoQ/issues?q=is%3Aopen+is%3Aissue"><img src="https://img.shields.io/github/issues/tigran-saatchyan/UniMart_by_Evoq" alt="Support me on Paypal"></a>
-<a href="https://github.com/tigran-saatchyan/UniMart_by_EvoQ/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed/tigran-saatchyan/UniMart_by_Evoq" alt="Support me on Paypal"></a>
+<a href="https://github.com/tigran-saatchyan/UniMart_by_EvoQ/issues?q=is%3Aopen+is%3Aissue"><img src="https://img.shields.io/github/issues/tigran-saatchyan/UniMart_by_Evoq" alt="open"></a>
+<a href="https://github.com/tigran-saatchyan/UniMart_by_EvoQ/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed/tigran-saatchyan/UniMart_by_Evoq" alt="close"></a>
 
 Please make sure to read the [Issue Reporting Checklist](https://github.com/tigran-saatchyan/UniMart_by_Evoq/issues?q=is%3Aopen) before opening an issue. Issues not conforming to the guidelines may be closed immediately.
 

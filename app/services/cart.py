@@ -30,14 +30,14 @@ class CartService:
     """
 
     @overload
-    def add(self, uow: UOWDependency, product: CartCreate, user: User) -> int:
-        pass
+    def add(
+        self, uow: UOWDependency, product: CartCreate, user: User
+    ) -> int: ...
 
     @overload
     def add(
         self, uow: UOWDependency, products: List[CartCreate], user: User
-    ) -> List[int]:
-        pass
+    ) -> List[int]: ...
 
     async def add(
         self,

@@ -4,7 +4,7 @@ from sqlalchemy import and_, delete, func, select, update
 
 from app.models import User
 from app.models.cart import Cart
-from app.utils.repository import BaseRepository
+from app.repositories.repository import BaseRepository
 
 
 class CartRepository(BaseRepository):

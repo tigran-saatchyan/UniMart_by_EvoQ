@@ -3,6 +3,7 @@
 from typing import Annotated, List, Union
 
 from fastapi import APIRouter, Depends
+from starlette import status
 
 from app.api.v1.dependencies import UOWDependency, current_user
 from app.models import User
@@ -15,7 +16,7 @@ router = APIRouter(
 )
 
 
-@router.post("/")
+@router.post("/", status_code=status.HTTP_201_CREATED)
 async def add_product_to_cart(
     user: Annotated[User, Depends(current_user)],
     product: Union[CartCreate, List[CartCreate]],
@@ -35,7 +36,7 @@ async def add_product_to_cart(
     return await CartService().add(uow, product, user)
 
 
-@router.get("/get_all/")
+@router.get("/get_all/", status_code=status.HTTP_200_OK)
 async def get_all_products_from_cart(
     uow: UOWDependency,
     user: Annotated[User, Depends(current_user)],
@@ -52,7 +53,7 @@ async def get_all_products_from_cart(
     return await CartService().get_all(uow, user)
 
 
-@router.get("/{product_id}")
+@router.get("/{product_id}", status_code=status.HTTP_200_OK)
 async def get_one_product_from_cart(
     uow: UOWDependency,
     product_id: int,
@@ -71,7 +72,7 @@ async def get_one_product_from_cart(
     return await CartService().get(uow, product_id, user)
 
 
-@router.patch("/{product_id}")
+@router.patch("/{product_id}", status_code=status.HTTP_200_OK)
 async def update_product_quantity(
     uow: UOWDependency,
     product_id: int,
@@ -92,7 +93,7 @@ async def update_product_quantity(
     return await CartService().update(uow, product_id, product, user)
 
 
-@router.delete("/{product_id}")
+@router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def remove_product_from_cart(
     uow: UOWDependency,
     product_id: int,
@@ -111,7 +112,7 @@ async def remove_product_from_cart(
     return await CartService().delete(uow, product_id, user)
 
 
-@router.delete("/clear_cart/")
+@router.delete("/clear_cart/", status_code=status.HTTP_204_NO_CONTENT)
 async def clear_cart(
     uow: UOWDependency,
     user: Annotated[User, Depends(current_user)],
@@ -128,7 +129,7 @@ async def clear_cart(
     return await CartService().delete_all(uow, user)
 
 
-@router.get("/total_price/")
+@router.get("/total_price/", status_code=status.HTTP_200_OK)
 async def get_total_cart_price(
     user: Annotated[User, Depends(current_user)],
     uow: UOWDependency,

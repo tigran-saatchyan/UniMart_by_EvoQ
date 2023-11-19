@@ -3,6 +3,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
+from starlette import status
 
 from app.api.v1.dependencies import UOWDependency, current_user
 from app.models import User
@@ -15,7 +16,7 @@ router = APIRouter(
 )
 
 
-@router.post("/")
+@router.post("/", status_code=status.HTTP_201_CREATED)
 async def add_product(
     user: Annotated[User, Depends(current_user)],
     product: ProductsCreate,
@@ -34,7 +35,7 @@ async def add_product(
     return await ProductsService().add(uow, product, user)
 
 
-@router.get("/")
+@router.get("/", status_code=status.HTTP_200_OK)
 async def get_products(
     uow: UOWDependency,
     user: Annotated[User, Depends(current_user)],
@@ -51,7 +52,7 @@ async def get_products(
     return await ProductsService().get_all(uow, user)
 
 
-@router.get("/{product_id}")
+@router.get("/{product_id}", status_code=status.HTTP_200_OK)
 async def get_product(
     product_id: int,
     uow: UOWDependency,
@@ -70,7 +71,7 @@ async def get_product(
     return await ProductsService().get(uow, product_id, user)
 
 
-@router.patch("/{product_id}")
+@router.patch("/{product_id}", status_code=status.HTTP_200_OK)
 async def update_product(
     product_id: int,
     product: ProductsUpdate,
@@ -92,7 +93,7 @@ async def update_product(
     return {"message": "Product updated successfully"}
 
 
-@router.delete("/{product_id}")
+@router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_product(
     product_id: int,
     uow: UOWDependency,
