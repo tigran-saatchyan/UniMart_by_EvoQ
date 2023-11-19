@@ -42,7 +42,7 @@ class TestCart:
             },
         )
 
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == status.HTTP_201_CREATED
 
     @staticmethod
     async def test_get_all_from_cart(ac: AsyncClient):

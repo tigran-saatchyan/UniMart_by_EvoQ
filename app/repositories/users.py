@@ -3,7 +3,7 @@
 from sqlalchemy import select
 
 from app.models import User
-from app.utils.repository import BaseRepository
+from app.repositories.repository import BaseRepository
 
 
 class UsersRepository(BaseRepository):

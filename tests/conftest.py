@@ -30,9 +30,6 @@ USER_PASSWORD = "Q1!string"
 USER_DATA = {
     "email": USER_EMAIL,
     "password": USER_PASSWORD,
-    "is_active": True,
-    "is_superuser": False,
-    "is_verified": False,
     "confirm_password": USER_PASSWORD,
     "first_name": "string",
     "last_name": "string",
@@ -82,7 +79,6 @@ async def prepare_database():
         await conn.run_sync(Base.metadata.drop_all)
 
 
-# SETUP
 @pytest.fixture(scope="session")
 def event_loop(request):
     """Create an instance of the default event loop for each test case."""
